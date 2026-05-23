@@ -8,32 +8,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
 
-// Initialize the socket
-const socket = io();
-
-const isScreenShareSupported = typeof navigator !== 'undefined' && !!navigator.mediaDevices && !!navigator.mediaDevices.getDisplayMedia;
-
-const useAudioLevel = (stream: MediaStream | null) => {
-  const [isSpeaking, setIsSpeaking] = useState(false);
-
-  useEffect(() => {
-    if (!stream) {
-      setIsSpeaking(false);
-      return;
-    }
-    
-    if (stream.getAudioTracks().length === 0) return;
-
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 256;
-      analyser.smoothingTimeConstant = 0.5;
-      
-      const source = audioContext.createMediaStreamSource(stream);
-      source.connect(analyser);
-      
-      const dataArray = new Uint8Array(analyser.frequencyBinCount);
       
       let animationFrame: number;
       let silenceCount = 0;
